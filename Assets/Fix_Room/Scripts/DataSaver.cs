@@ -86,26 +86,4 @@ public class DataSaver : MonoBehaviour
         PlayerPrefs.SetInt("UserID", 0);
         PlayerPrefs.Save();
     }
-
-    // void SaveToTxt(UserData data)
-    // {
-    //     File.AppendAllText(txtPath, data.ToString() + "\n");
-    // }
-
-    // public void SaveNullData(int round)
-    // {
-    //     SaveNullDataToCSV(round);
-    //     SaveNullDataToTxt(round);
-    // }
-
-    // void SaveNullDataToTxt(int round)
-    // {
-    //     File.AppendAllText(txtPath, $"Null Data for Round {round}\n");
-    // }
-
-    // void SaveNullDataToCSV(int round)
-    // {
-    //     UserData data = new UserData(userId, round, "null", "null", -1.0f);
-    //     File.AppendAllText(csvPath, data.ToCSV() + "\n");
-    // }
 }

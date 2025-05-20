@@ -70,8 +70,6 @@ public class UIHandler : MonoBehaviour
 
     void StartGame(ImageSO target, List<ImageSO> random)
     {
-        Debug.Log(random.Count);
-        Debug.Log(iconButtons.Count);
         startButton.SetImageData(target);
         for (int i = 0; i < iconButtons.Count; i++)
         {
