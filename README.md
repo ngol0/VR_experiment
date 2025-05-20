@@ -1,2 +1,2 @@
 # VR_learning
-VR experiments for research
+[Updated instruction if needed]
