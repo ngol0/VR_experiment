@@ -11,6 +11,7 @@ public class FlowManager : MonoBehaviour
     [SerializeField] IconFinder iconFinder;
 
     private float startTime;
+    private ImageSO iconTargetData;
 
     //-----Event for UI-----
     public Action<ImageSO, List<ImageSO>> OnStart;
@@ -28,27 +29,27 @@ public class FlowManager : MonoBehaviour
         Debug.Log("🟢 Timer started!");
 
         //------Find and set image for target button
-        ImageSO iconTarget = iconFinder.ChooseTargetImg();
+        iconTargetData = iconFinder.ChooseTargetImg();
 
         //------Find and set image for pickable buttons
         List<ImageSO> imageList = iconFinder.ChooseRandomImg();
 
-        OnStart?.Invoke(iconTarget, imageList);
+        OnStart?.Invoke(iconTargetData, imageList);
         StartCoroutine(Countdown(15.0f, MoveOnAfterNoPick));
     }
 
     // when icon is clicked > save data and go to rest state for 10 seconds
-    public void OnIconClicked(DisplayButton start, DisplayButton button)
+    public void OnIconClicked(DisplayButton selectedIcon)
     {
         float elapsedTime = Time.time - startTime;
-        OnButtonClicked?.Invoke(button, elapsedTime);
+        OnButtonClicked?.Invoke(selectedIcon, elapsedTime);
         
         StartCoroutine(DeactiveRandomIconAfterSound());
 
         // ---Save data---
         OnSaveData?.Invoke(iconFinder.CurrentIndex + 1,
-            start.imageData.iconName,
-            button.imageData.iconName,
+            iconTargetData.iconName,
+            selectedIcon.imageData.iconName,
             elapsedTime);
     }
 
@@ -97,7 +98,7 @@ public class FlowManager : MonoBehaviour
     void MoveOnAfterNoPick()
     {
         // save data to null
-        OnSaveData(iconFinder.CurrentIndex + 1, "null", "null", -1.0f);
+        OnSaveData(iconFinder.CurrentIndex + 1, iconTargetData.iconName, "null", -1.0f);
 
         // change UI
         OnUIChanged?.Invoke(UI_STATE.MOVE_ON_UI);

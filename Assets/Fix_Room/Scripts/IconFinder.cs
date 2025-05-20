@@ -9,9 +9,13 @@ public class IconFinder : MonoBehaviour
 
     List<int> indexList;
 
+    // const var
     const int GROUP_SIZE = 9;
     const int MAX_RANDOM = 10;
     const int ICON_SIZE = 27;
+    const int NUMBER_OF_GROUP = 3;
+
+    // -- 
     int targetGroupIndex = 0;
     int targetImageIndex = 0;
     int currentIndex = -1; //index for picking the target image
@@ -26,7 +30,7 @@ public class IconFinder : MonoBehaviour
 
     void Start()
     {
-        indexList = Enumerable.Range(0, 27).OrderBy(_ => UnityEngine.Random.value).ToList();
+        indexList = Enumerable.Range(0, ICON_SIZE).OrderBy(_ => UnityEngine.Random.value).ToList();
     }
 
     //------------------Function for picking random icons:--------------------
@@ -38,7 +42,7 @@ public class IconFinder : MonoBehaviour
         randomImages.Clear();
 
         // --- Get indexes in the target group
-        // Pick 4 random others from the same group
+        // Pick random others from the same group
         List<int> otherInGroupIndexes = ChooseRandomIndexFromSameGroup(numberOfSameGroupImages);
 
         // --- Combine all selected indexes
@@ -53,7 +57,7 @@ public class IconFinder : MonoBehaviour
             //Debug.Log("Picking from other group");
             // --- Get indexes in other groups
             List<int> otherGroupIndexes = new List<int>();
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < NUMBER_OF_GROUP; i++)
             {
                 if (i == targetGroupIndex) continue;
                 otherGroupIndexes.AddRange(Enumerable.Range(i * GROUP_SIZE, GROUP_SIZE));
@@ -89,15 +93,18 @@ public class IconFinder : MonoBehaviour
         sameGroupIndexes.Remove(targetImageIndex); // remove the actual target
         List<int> otherInGroupIndexes = new List<int>();
 
+        // take a set of image from the same group as target (but not include target in here)
+        // if num of images is set < 10
         if (numberOfImages < MAX_RANDOM)
-        // Pick random others from the same group
         {
+            // take (num of image - 1) image in the same group (and then take target later)
             otherInGroupIndexes = sameGroupIndexes.OrderBy(
                 _ => UnityEngine.Random.value).Take(numberOfImages - 1).ToList();
         }
         else
         {
-            for (int i = 0; i < MAX_RANDOM - 1; i++)
+            // take 9 images from the same group if same group image is set to 10 (then take target later)
+            for (int i = 0; i < numberOfImages - 1; i++)
             {
                 int randomIndex = UnityEngine.Random.Range(0, sameGroupIndexes.Count);
                 otherInGroupIndexes.Add(sameGroupIndexes[randomIndex]);
@@ -142,5 +149,6 @@ public class IconFinder : MonoBehaviour
     public bool IsFinish()
     {
         return currentIndex >= ICON_SIZE - 1;
+        //return currentIndex > 1; //for testing only
     }
 }

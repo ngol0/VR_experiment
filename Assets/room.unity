@@ -2415,7 +2415,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groupIconData: {fileID: 11400000, guid: 69d9b778549154a46b340431268f5ca5, type: 2}
-  numberOfSameGroupImages: 4
+  numberOfSameGroupImages: 8
 --- !u!114 &1679042230
 MonoBehaviour:
   m_ObjectHideFlags: 0

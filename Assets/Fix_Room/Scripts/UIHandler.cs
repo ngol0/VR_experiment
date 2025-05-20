@@ -64,7 +64,7 @@ public class UIHandler : MonoBehaviour
             DisplayButton iconButtonUI = icon.GetComponent<DisplayButton>();
             iconButtons.Add(iconButtonUI);
             iconButtons[i].GetComponent<Button>().onClick.AddListener(
-                () => manager.OnIconClicked(startButton, iconButtonUI));
+                () => manager.OnIconClicked(iconButtonUI));
         }
     }
 
@@ -80,7 +80,7 @@ public class UIHandler : MonoBehaviour
 
     void OnClicked(DisplayButton button, float elapsedTime)
     {
-        logText.text = $"Icon {button.imageData.index} clicked at {elapsedTime:F2} sec\n";
+        logText.text = $"Icon {button.imageData.iconName} clicked at {elapsedTime:F2} sec\n";
     }
 
     void OnUIChanged(UI_STATE state)
