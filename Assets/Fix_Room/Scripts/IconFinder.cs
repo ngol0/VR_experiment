@@ -59,7 +59,8 @@ public class IconFinder : MonoBehaviour
                 otherGroupIndexes.AddRange(Enumerable.Range(i * GROUP_SIZE, GROUP_SIZE));
             }
 
-            List<int> otherGroupChoices = otherGroupIndexes.OrderBy(_ => UnityEngine.Random.value).Take(5).ToList();
+            List<int> otherGroupChoices = otherGroupIndexes.OrderBy(_ => UnityEngine.Random.value).Take(
+                MAX_RANDOM - numberOfSameGroupImages).ToList();
             pickIndexes.AddRange(otherGroupChoices);
         }
 

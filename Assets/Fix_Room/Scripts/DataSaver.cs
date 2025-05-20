@@ -36,6 +36,13 @@ public class DataSaver : MonoBehaviour
     string csvPath;
     int userId;
 
+    [SerializeField] FlowManager manager;
+
+    void OnEnable()
+    {
+        manager.OnSaveData += SaveUserData;
+    }
+
     void Start()
     {
         csvPath = Path.Combine(Application.persistentDataPath, "UserDataLog.csv");
@@ -74,31 +81,31 @@ public class DataSaver : MonoBehaviour
         File.AppendAllText(csvPath, data.ToCSV() + "\n");
     }
 
+    public void ResetUserId()
+    {
+        PlayerPrefs.SetInt("UserID", 0);
+        PlayerPrefs.Save();
+    }
+
     // void SaveToTxt(UserData data)
     // {
     //     File.AppendAllText(txtPath, data.ToString() + "\n");
     // }
 
-    public void SaveNullData(int round)
-    {
-        SaveNullDataToCSV(round);
-        //SaveNullDataToTxt(round);
-    }
+    // public void SaveNullData(int round)
+    // {
+    //     SaveNullDataToCSV(round);
+    //     SaveNullDataToTxt(round);
+    // }
 
     // void SaveNullDataToTxt(int round)
     // {
     //     File.AppendAllText(txtPath, $"Null Data for Round {round}\n");
     // }
 
-    void SaveNullDataToCSV(int round)
-    {
-        UserData data = new UserData(userId, round, "null", "null", -1.0f);
-        File.AppendAllText(csvPath, data.ToCSV() + "\n");
-    }
-
-    public void ResetUserId()
-    {
-        PlayerPrefs.SetInt("UserID", 0);
-        PlayerPrefs.Save();
-    }
+    // void SaveNullDataToCSV(int round)
+    // {
+    //     UserData data = new UserData(userId, round, "null", "null", -1.0f);
+    //     File.AppendAllText(csvPath, data.ToCSV() + "\n");
+    // }
 }

@@ -3105,8 +3105,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1908389960}
-        m_TargetAssemblyTypeName: IconManager, Assembly-CSharp
+      - m_Target: {fileID: 1679042230}
+        m_TargetAssemblyTypeName: FlowManager, Assembly-CSharp
         m_MethodName: StartGame
         m_Mode: 1
         m_Arguments:
@@ -4423,6 +4423,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28d05adf699169f4d8f5fc49444434e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  manager: {fileID: 1679042230}
 --- !u!4 &572085297
 Transform:
   m_ObjectHideFlags: 0
@@ -11545,6 +11546,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1679042228}
+  - component: {fileID: 1679042230}
+  - component: {fileID: 1679042229}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -11566,9 +11569,35 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 572085297}
-  - {fileID: 1750458357}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1679042229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1679042227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74bf5c507798931428cd96ca931bfffc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groupIconData: {fileID: 11400000, guid: 69d9b778549154a46b340431268f5ca5, type: 2}
+  numberOfSameGroupImages: 4
+--- !u!114 &1679042230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1679042227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26617fc8110ec06429f9d96f2ac5ea9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iconFinder: {fileID: 1679042229}
 --- !u!1 &1683995448
 GameObject:
   m_ObjectHideFlags: 0
@@ -11870,52 +11899,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1702963519}
   m_CullTransparentMesh: 0
---- !u!1 &1750458356
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1750458357}
-  - component: {fileID: 1750458358}
-  m_Layer: 0
-  m_Name: IconSetter
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1750458357
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1750458356}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1679042228}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1750458358
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1750458356}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74bf5c507798931428cd96ca931bfffc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  groupIconData: {fileID: 11400000, guid: 69d9b778549154a46b340431268f5ca5, type: 2}
-  numberOfSameGroupImages: 5
 --- !u!1 &1754699343
 GameObject:
   m_ObjectHideFlags: 0
@@ -12527,8 +12510,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1908389960}
-        m_TargetAssemblyTypeName: IconManager, Assembly-CSharp
+      - m_Target: {fileID: 1679042230}
+        m_TargetAssemblyTypeName: FlowManager, Assembly-CSharp
         m_MethodName: ResetGame
         m_Mode: 1
         m_Arguments:
@@ -13209,19 +13192,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1908389949}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26617fc8110ec06429f9d96f2ac5ea9e, type: 3}
+  m_Script: {fileID: 11500000, guid: 448adfa1cb2a2104086945528f8191f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  iconFinder: {fileID: 1750458358}
-  dataSaver: {fileID: 572085296}
+  manager: {fileID: 1679042230}
   IconPrefab: {fileID: 4460595795197969778, guid: 2922e291fa0e90a4b9d8c65c7fb43553, type: 3}
   StartIcon: {fileID: 424493347}
   radius: 0.7
+  logText: {fileID: 1790813659}
+  countdownText: {fileID: 1207776930}
   iconButtons: []
   startButton: {fileID: 424493354}
   resetButton: {fileID: 1803288337}
-  logText: {fileID: 1790813659}
-  countdownText: {fileID: 1207776930}
 --- !u!1 &1909635282
 GameObject:
   m_ObjectHideFlags: 0
