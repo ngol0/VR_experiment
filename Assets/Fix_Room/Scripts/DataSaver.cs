@@ -16,9 +16,9 @@ public class UserData
     }
 
     public string ToCSV()
-{
-    return $"{userId},{round},{targetIndex},{pickedIndex},{seconds}";
-}
+    {
+        return $"{userId},{round},{targetIndex},{pickedIndex},{seconds}";
+    }
 
     public UserData(int id, int rnd, string tIndex, string pIndex, float secs)
     {
@@ -46,7 +46,6 @@ public class DataSaver : MonoBehaviour
     void Start()
     {
         csvPath = Path.Combine(Application.persistentDataPath, "UserDataLog.csv");
-        //txtPath = Path.Combine(Application.persistentDataPath, "UserDataLog.txt");
         Debug.Log(csvPath);
 
         // If the log file does not exist, reset the user ID
@@ -60,16 +59,12 @@ public class DataSaver : MonoBehaviour
         userId = PlayerPrefs.GetInt("UserID", 0) + 1;
         PlayerPrefs.SetInt("UserID", userId);
         PlayerPrefs.Save();
-
-        // Append a header for this user/session in txt file
-        //File.AppendAllText(txtPath, $"\n*User {userId}\n");
     }
 
     public void SaveUserData(int round, string targetName, string selectedName, float time)
     {
         UserData data = new UserData(userId, round, targetName, selectedName, time);
         SaveToCSV(data);
-        //SaveToTxt(data);
     }
 
     void SaveToCSV(UserData data)

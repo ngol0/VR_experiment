@@ -7,10 +7,10 @@ using System;
 
 public enum UI_STATE
 {
-    MOVE_ON_UI,
-    COMPLETE_UI,
-    ICON_CLICKED,
-    CONTINUE
+    NO_SELECTION,
+    ON_COMPLETE,
+    ON_ICON_CLICKED,
+    DONE_REST
 }
 
 public class UIHandler : MonoBehaviour
@@ -32,12 +32,10 @@ public class UIHandler : MonoBehaviour
     [SerializeField] DisplayButton startButton;
     [SerializeField] DisplayButton resetButton;
 
-    const int ICON_COUNT = 10;
-
     void OnEnable()
     {
         manager.OnStart += StartGame;
-        manager.OnButtonClicked += OnClicked;
+        manager.OnButtonClicked += UpdateLogOnClick;
         manager.OnUIChanged += OnUIChanged;
         manager.UpdateCountdownText += OnCountdownUpdate;
     }
@@ -51,10 +49,10 @@ public class UIHandler : MonoBehaviour
     // initialize 10 icon prefab
     private void InitIconPrefab()
     {
-        for (int i = 0; i < ICON_COUNT; i++)
+        for (int i = 0; i < IconFinder.MAX_RANDOM; i++)
         {
             // init prefab
-            float angle = i * Mathf.PI * 2f / ICON_COUNT;
+            float angle = i * Mathf.PI * 2f / IconFinder.MAX_RANDOM;
             Vector3 offset = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * radius;
             Vector3 spawnPosition = StartIcon.position + offset;
             var icon = Instantiate(IconPrefab, spawnPosition, Quaternion.identity, transform);
@@ -68,6 +66,7 @@ public class UIHandler : MonoBehaviour
         }
     }
 
+    // Set images for icons and turn random icon active
     void StartGame(ImageSO target, List<ImageSO> random)
     {
         startButton.SetImageData(target);
@@ -78,7 +77,7 @@ public class UIHandler : MonoBehaviour
         }
     }
 
-    void OnClicked(DisplayButton button, float elapsedTime)
+    void UpdateLogOnClick(DisplayButton button, float elapsedTime)
     {
         logText.text = $"Icon {button.imageData.iconName} clicked at {elapsedTime:F2} sec\n";
     }
@@ -87,23 +86,24 @@ public class UIHandler : MonoBehaviour
     {
         switch (state)
         {
-            case UI_STATE.COMPLETE_UI:
+            case UI_STATE.ON_COMPLETE:
                 UIComplete();
                 break;
-            case UI_STATE.MOVE_ON_UI:
-                UIMoveOn();
+            case UI_STATE.NO_SELECTION:
+                UINotSelect();
                 break;
-            case UI_STATE.ICON_CLICKED:
-                UIAfterClick();
+            case UI_STATE.ON_ICON_CLICKED:
+                UIOnRest();
                 break;
-            case UI_STATE.CONTINUE:
+            case UI_STATE.DONE_REST:
                 UIContinue();
                 break;
         }
 
     }
 
-    void UIAfterClick()
+    // -- On Rest: Random icons disappear and Start Btn no interaction
+    void UIOnRest()
     {
         // set all icons to inactive and set start button to a white image
         for (int i = 0; i < iconButtons.Count; i++)
@@ -113,6 +113,13 @@ public class UIHandler : MonoBehaviour
         startButton.SetToNullImage();
     }
 
+    // -- Continue after rest: Reactivate Start Btn
+    void UIContinue()
+    {
+        ResetStartButton();
+    }
+
+    // -- On Complete: Start Btn is now Reset Btn, all other UI disappear except "Complete" txt
     void UIComplete()
     {
         countdownText.text = "Experiment Complete!";
@@ -121,7 +128,8 @@ public class UIHandler : MonoBehaviour
         resetButton.gameObject.SetActive(true);
     }
 
-    void UIMoveOn()
+    // -- No Selection: No Rest. All random disappear, Start Btn interactive again
+    void UINotSelect()
     {
         for (int i = 0; i < iconButtons.Count; i++)
         {
@@ -132,14 +140,9 @@ public class UIHandler : MonoBehaviour
         ResetStartButton();
     }
 
-    void UIContinue()
-    {
-        ResetStartButton();
-    }
-
     void ResetStartButton()
     {
-        // Reactivate the start button
+        // Reactivate the start button (image + interaction)
         startButton.ResetImage();
         startButton.ResetButton();
     }

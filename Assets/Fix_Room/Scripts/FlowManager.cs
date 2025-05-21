@@ -57,13 +57,13 @@ public class FlowManager : MonoBehaviour
     IEnumerator DeactiveRandomIconAfterSound()
     {
         yield return new WaitForSeconds(0.1f);
-        OnUIChanged?.Invoke(UI_STATE.ICON_CLICKED);
+        OnUIChanged?.Invoke(UI_STATE.ON_ICON_CLICKED);
         StopAllCoroutines();
 
         // Check if at the end of index
         if (iconFinder.IsFinish())
         {
-            OnUIChanged?.Invoke(UI_STATE.COMPLETE_UI);
+            OnUIChanged?.Invoke(UI_STATE.ON_COMPLETE);
         }
         else
         {
@@ -92,7 +92,7 @@ public class FlowManager : MonoBehaviour
     void ContinueAfterRest()
     {
         // change UI
-        OnUIChanged?.Invoke(UI_STATE.CONTINUE);
+        OnUIChanged?.Invoke(UI_STATE.DONE_REST);
     }
 
     void MoveOnAfterNoPick()
@@ -101,7 +101,7 @@ public class FlowManager : MonoBehaviour
         OnSaveData(iconFinder.CurrentIndex + 1, iconTargetData.iconName, "null", -1.0f);
 
         // change UI
-        OnUIChanged?.Invoke(UI_STATE.MOVE_ON_UI);
+        OnUIChanged?.Invoke(UI_STATE.NO_SELECTION);
     }
 
     public void ResetGame()

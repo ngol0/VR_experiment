@@ -10,26 +10,28 @@ public class IconFinder : MonoBehaviour
     List<int> indexList;
 
     // const var
-    const int GROUP_SIZE = 9;
-    const int MAX_RANDOM = 10;
-    const int ICON_SIZE = 27;
-    const int NUMBER_OF_GROUP = 3;
+    int GROUP_SIZE;
+    int NUMBER_OF_GROUP;
+    public const int MAX_RANDOM = 10;
+    public const int ICON_SIZE = 27;
 
     // -- 
     int targetGroupIndex = 0;
     int targetImageIndex = 0;
     int currentIndex = -1; //index for picking the target image
 
-    public int TargetIndex => targetImageIndex;
     public int CurrentIndex => currentIndex;
 
     List<ImageSO> randomImages = new List<ImageSO>();
 
     [Header("Random Image Configuration")]
-    [SerializeField][Range(0, 10)] int numberOfSameGroupImages = 4;
+    [SerializeField][Range(1, MAX_RANDOM)] int numberOfSameGroupImages = 4;
 
     void Start()
     {
+        GROUP_SIZE = groupIconData.groups[0].images.Count;
+        NUMBER_OF_GROUP = groupIconData.groups.Count;
+
         indexList = Enumerable.Range(0, ICON_SIZE).OrderBy(_ => UnityEngine.Random.value).ToList();
     }
 
