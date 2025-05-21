@@ -13,7 +13,7 @@ public class IconFinder : MonoBehaviour
     int GROUP_SIZE;
     int NUMBER_OF_GROUP;
     public const int MAX_RANDOM = 10;
-    public const int ICON_SIZE = 27;
+    int ICON_SIZE = 27;
 
     // -- 
     int targetGroupIndex = 0;
@@ -31,6 +31,7 @@ public class IconFinder : MonoBehaviour
     {
         GROUP_SIZE = groupIconData.groups[0].images.Count;
         NUMBER_OF_GROUP = groupIconData.groups.Count;
+        ICON_SIZE = GROUP_SIZE * NUMBER_OF_GROUP;
 
         indexList = Enumerable.Range(0, ICON_SIZE).OrderBy(_ => UnityEngine.Random.value).ToList();
     }
