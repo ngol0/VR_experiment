@@ -10,7 +10,8 @@ public enum UI_STATE
     NO_SELECTION,
     ON_COMPLETE,
     ON_ICON_CLICKED,
-    DONE_REST
+    QUESTION_DISPLAY,
+    DONE_QUESTION
 }
 
 public class UIHandler : MonoBehaviour
@@ -18,6 +19,7 @@ public class UIHandler : MonoBehaviour
     [SerializeField] FlowManager manager;
 
     [Header("Init icons")]
+    [SerializeField] private Transform root;
     [SerializeField] private GameObject IconPrefab;
     [SerializeField] private Transform StartIcon;
     [SerializeField] private float radius = 2.0f;
@@ -55,7 +57,7 @@ public class UIHandler : MonoBehaviour
             float angle = i * Mathf.PI * 2f / IconFinder.MAX_RANDOM;
             Vector3 offset = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * radius;
             Vector3 spawnPosition = StartIcon.position + offset;
-            var icon = Instantiate(IconPrefab, spawnPosition, Quaternion.identity, transform);
+            var icon = Instantiate(IconPrefab, spawnPosition, Quaternion.identity, root);
             icon.SetActive(false);
 
             // put into list
@@ -95,7 +97,7 @@ public class UIHandler : MonoBehaviour
             case UI_STATE.ON_ICON_CLICKED:
                 UIOnRest();
                 break;
-            case UI_STATE.DONE_REST:
+            case UI_STATE.DONE_QUESTION:
                 UIContinue();
                 break;
         }

@@ -9,6 +9,10 @@ public class UserData
     string pickedIndex;
     float seconds;
 
+    float question1;
+    float question2;
+    float question3;
+
     public override string ToString()
     {
         // Text format — change this as needed
@@ -20,13 +24,16 @@ public class UserData
         return $"{userId},{round},{targetIndex},{pickedIndex},{seconds}";
     }
 
-    public UserData(int id, int rnd, string tIndex, string pIndex, float secs)
+    public UserData(int id, int rnd, string tIndex, string pIndex, float secs, float q1, float q2, float q3)
     {
         userId = id;
         round = rnd;
         targetIndex = tIndex;
         pickedIndex = pIndex;
         seconds = secs;
+        question1 = q1;
+        question2 = q2;
+        question3 = q3;
     }
 }
 
@@ -61,9 +68,12 @@ public class DataSaver : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    public void SaveUserData(int round, string targetName, string selectedName, float time)
+    public void SaveUserData(
+        int round, string targetName, string selectedName, float time, 
+        float q1, float q2, float q3)
     {
-        UserData data = new UserData(userId, round, targetName, selectedName, time);
+        UserData data = new UserData(
+            userId, round, targetName, selectedName, time, q1, q2, q3);
         SaveToCSV(data);
     }
 

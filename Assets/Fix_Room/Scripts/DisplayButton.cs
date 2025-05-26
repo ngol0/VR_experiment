@@ -1,8 +1,6 @@
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
-using System.Diagnostics.Tracing;
-using Unity.VisualScripting;
 
 public class DisplayButton : MonoBehaviour
 {

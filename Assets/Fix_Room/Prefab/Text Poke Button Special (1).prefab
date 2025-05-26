@@ -458,6 +458,8 @@ MonoBehaviour:
   continueText: {fileID: 0}
   isTarget: 0
   button: {fileID: 0}
+  plusSign: {fileID: 0}
+  imageData: {fileID: 0}
 --- !u!1 &5284622927173006728
 GameObject:
   m_ObjectHideFlags: 0

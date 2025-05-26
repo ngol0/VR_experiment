@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,8 +9,11 @@ public class FlowManager : MonoBehaviour
     [Header("Dependency on other classes")]
     [SerializeField] IconFinder iconFinder;
 
+    //-----State variables-----
     private float startTime;
+    private float selectedTime;
     private ImageSO iconTargetData;
+    private ImageSO selectedTargetData;
 
     //-----Event for UI-----
     public Action<ImageSO, List<ImageSO>> OnStart;
@@ -20,13 +22,16 @@ public class FlowManager : MonoBehaviour
     public Action<string> UpdateCountdownText;
 
     //-----Event for Saver-----
-    public Action<int, string, string, float> OnSaveData;
+    public Action<int, string, string, float, float, float, float> OnSaveData;
 
     // when user choose start icon > all icons are shown and timer is started
     public void StartGame()
     {
         startTime = Time.time;
-        Debug.Log("🟢 Timer started!");
+        selectedTime = 0.0f;
+        selectedTargetData = null; // reset selected target data
+
+        Debug.Log("Timer started!");
 
         //------Find and set image for target button
         iconTargetData = iconFinder.ChooseTargetImg();
@@ -35,22 +40,19 @@ public class FlowManager : MonoBehaviour
         List<ImageSO> imageList = iconFinder.ChooseRandomImg();
 
         OnStart?.Invoke(iconTargetData, imageList);
-        StartCoroutine(Countdown(15.0f, MoveOnAfterNoPick));
+        //StartCoroutine(Countdown(15.0f, MoveOnAfterNoPick));
+
+        StartCoroutine(Countdown(15.0f, DisplayQuestion));
     }
 
     // when icon is clicked > save data and go to rest state for 10 seconds
     public void OnIconClicked(DisplayButton selectedIcon)
     {
-        float elapsedTime = Time.time - startTime;
-        OnButtonClicked?.Invoke(selectedIcon, elapsedTime);
-        
-        StartCoroutine(DeactiveRandomIconAfterSound());
+        selectedTime = Time.time - startTime;
+        selectedTargetData = selectedIcon.imageData;
 
-        // ---Save data---
-        OnSaveData?.Invoke(iconFinder.CurrentIndex + 1,
-            iconTargetData.iconName,
-            selectedIcon.imageData.iconName,
-            elapsedTime);
+        OnButtonClicked?.Invoke(selectedIcon, selectedTime); //update logger
+        StartCoroutine(DeactiveRandomIconAfterSound());
     }
 
     // after 10 seconds > start icon is enabled for user to continue
@@ -58,7 +60,7 @@ public class FlowManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
         OnUIChanged?.Invoke(UI_STATE.ON_ICON_CLICKED);
-        StopAllCoroutines();
+        StopAllCoroutines(); // stop the other countdown
 
         // Check if at the end of index
         if (iconFinder.IsFinish())
@@ -68,8 +70,16 @@ public class FlowManager : MonoBehaviour
         else
         {
             // rest 10 secs
-            StartCoroutine(Countdown(10.0f, ContinueAfterRest));
+            //StartCoroutine(Countdown(10.0f, ContinueAfterRest));
+
+            // display the questions
+            DisplayQuestion();
         }
+    }
+
+    void DisplayQuestion()
+    {
+        OnUIChanged?.Invoke(UI_STATE.QUESTION_DISPLAY);
     }
 
     // coundown function - can be reused for different purposes
@@ -89,19 +99,38 @@ public class FlowManager : MonoBehaviour
         DoSomething?.Invoke();
     }
 
-    void ContinueAfterRest()
+    public void ContinueAfterQuestion(float q1, float q2, float q3)
     {
-        // change UI
-        OnUIChanged?.Invoke(UI_STATE.DONE_REST);
+        if (HavePicked())
+        {
+            // ---Save data---
+            OnSaveData?.Invoke(iconFinder.CurrentIndex + 1,
+                iconTargetData.iconName,
+                selectedTargetData.iconName,
+                selectedTime,
+                q1, q2, q3);
+
+            // change UI
+            //OnUIChanged?.Invoke(UI_STATE.DONE_QUESTION);
+        }
+        else //when user don't pick any icon
+        {
+            // save data to null
+            OnSaveData(iconFinder.CurrentIndex + 1,
+                iconTargetData.iconName,
+                "null",
+                -1.0f,
+                q1, q2, q3);
+
+            // change UI
+            //OnUIChanged?.Invoke(UI_STATE.NO_SELECTION);
+        }
+        OnUIChanged?.Invoke(UI_STATE.DONE_QUESTION);
     }
 
-    void MoveOnAfterNoPick()
+    bool HavePicked()
     {
-        // save data to null
-        OnSaveData(iconFinder.CurrentIndex + 1, iconTargetData.iconName, "null", -1.0f);
-
-        // change UI
-        OnUIChanged?.Invoke(UI_STATE.NO_SELECTION);
+        return selectedTargetData != null;
     }
 
     public void ResetGame()
