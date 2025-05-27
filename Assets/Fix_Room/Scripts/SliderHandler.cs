@@ -7,7 +7,7 @@ public class SliderHandler : MonoBehaviour
 {
     [SerializeField] Slider slider;
     [SerializeField] TMP_Text valueText;
-    [SerializeField] int sliderId = 0;
+    public int sliderId = 0;
 
     [Header("Events")]
     [SerializeField] ValueChangeEventSO valueChangeEvent;
@@ -16,23 +16,24 @@ public class SliderHandler : MonoBehaviour
     void Start()
     {
         slider.value = slider.minValue;
+        currentValue = slider.value;
+
         slider.onValueChanged.AddListener(UpdateHandleValue);
-        UpdateHandleValue(slider.value);
+        valueText.text = "?";
     }
 
     void UpdateHandleValue(float value)
     {
         currentValue = value;
-        valueText.text = value.ToString("F1");
+        valueText.text = currentValue.ToString("F1");
 
         valueChangeEvent.Raise(sliderId, currentValue); // Notify listeners of the value change
     }
 
-    public void OnContinue()
+    public void OnReset()
     {
-        // ???
-
         // reset values
         slider.value = slider.minValue;
+        valueText.text = "?";
     }
 }

@@ -59,7 +59,6 @@ public class FlowManager : MonoBehaviour
     IEnumerator DeactiveRandomIconAfterSound()
     {
         yield return new WaitForSeconds(0.1f);
-        OnUIChanged?.Invoke(UI_STATE.ON_ICON_CLICKED);
         StopAllCoroutines(); // stop the other countdown
 
         // Check if at the end of index
@@ -70,6 +69,7 @@ public class FlowManager : MonoBehaviour
         else
         {
             // rest 10 secs
+            //OnUIChanged?.Invoke(UI_STATE.ON_ICON_CLICKED);
             //StartCoroutine(Countdown(10.0f, ContinueAfterRest));
 
             // display the questions
@@ -79,7 +79,7 @@ public class FlowManager : MonoBehaviour
 
     void DisplayQuestion()
     {
-        OnUIChanged?.Invoke(UI_STATE.QUESTION_DISPLAY);
+        OnUIChanged?.Invoke(UI_STATE.ON_ICON_CLICKED);
     }
 
     // coundown function - can be reused for different purposes
@@ -99,7 +99,7 @@ public class FlowManager : MonoBehaviour
         DoSomething?.Invoke();
     }
 
-    public void ContinueAfterQuestion(float q1, float q2, float q3)
+    public void SaveData(float q1, float q2, float q3)
     {
         if (HavePicked())
         {
@@ -116,7 +116,7 @@ public class FlowManager : MonoBehaviour
         else //when user don't pick any icon
         {
             // save data to null
-            OnSaveData(iconFinder.CurrentIndex + 1,
+            OnSaveData?.Invoke(iconFinder.CurrentIndex + 1,
                 iconTargetData.iconName,
                 "null",
                 -1.0f,

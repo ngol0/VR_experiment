@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 59598500}
   - component: {fileID: 59598499}
   m_Layer: 5
-  m_Name: Slider (2)
+  m_Name: Q3Slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -178,7 +178,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 59598500}
   valueText: {fileID: 715025284}
-  sliderId: 2
+  sliderId: 0
   valueChangeEvent: {fileID: 11400000, guid: f0791fd2eb81e7540a5f2e7bfaae5880, type: 2}
 --- !u!114 &59598500
 MonoBehaviour:
@@ -473,8 +473,8 @@ RectTransform:
   - {fileID: 567670878}
   m_Father: {fileID: 1255449023}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.31888887, y: 0}
+  m_AnchorMax: {x: 0.31888887, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -561,6 +561,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b27949a68fa40c4499ffdc77f60a5073, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flowManager: {fileID: 1679042230}
+  sliders:
+  - {fileID: 2081203780}
+  - {fileID: 1737852402}
+  - {fileID: 59598499}
 --- !u!114 &282529269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1211,6 +1216,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 282529268}
+        m_TargetAssemblyTypeName: QuestionManager, Assembly-CSharp
+        m_MethodName: OnReset
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!222 &424493353
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1574,7 +1591,7 @@ RectTransform:
   m_Father: {fileID: 1083652216}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.31888887, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2119,7 +2136,7 @@ RectTransform:
   m_Father: {fileID: 613786990}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.31888887, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4440,7 +4457,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1518090556
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4856,8 +4873,8 @@ RectTransform:
   - {fileID: 761593399}
   m_Father: {fileID: 843912912}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.31888887, y: 0}
+  m_AnchorMax: {x: 0.31888887, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5659,8 +5676,8 @@ RectTransform:
   - {fileID: 1725220353}
   m_Father: {fileID: 624534047}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.31888887, y: 0}
+  m_AnchorMax: {x: 0.31888887, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5714,7 +5731,7 @@ GameObject:
   - component: {fileID: 1737852403}
   - component: {fileID: 1737852402}
   m_Layer: 5
-  m_Name: Slider (1)
+  m_Name: Q2Slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5758,7 +5775,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 1737852403}
   valueText: {fileID: 1233467300}
-  sliderId: 1
+  sliderId: 0
   valueChangeEvent: {fileID: 11400000, guid: f0791fd2eb81e7540a5f2e7bfaae5880, type: 2}
 --- !u!114 &1737852403
 MonoBehaviour:
@@ -6298,7 +6315,7 @@ RectTransform:
   m_Father: {fileID: 1632206718}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.31888887, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6360,7 +6377,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1908389950
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6901,6 +6918,8 @@ MonoBehaviour:
   iconButtons: []
   startButton: {fileID: 424493354}
   resetButton: {fileID: 1803288337}
+  continueButton: {fileID: 2060873669}
+  questionUI: {fileID: 1518090556}
 --- !u!1 &2060873662
 GameObject:
   m_ObjectHideFlags: 0
@@ -6916,14 +6935,13 @@ GameObject:
   - component: {fileID: 2060873667}
   - component: {fileID: 2060873666}
   - component: {fileID: 2060873665}
-  - component: {fileID: 2060873664}
   m_Layer: 5
   m_Name: Continue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2060873663
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6945,24 +6963,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -57}
   m_SizeDelta: {x: 150, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2060873664
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2060873662}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db685b046608663449155083b2344975, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  image: {fileID: 1989853875}
-  continueText: {fileID: 463897712}
-  isTarget: 1
-  button: {fileID: 2060873669}
-  plusSign: {fileID: 21300000, guid: ccbaa20dbe7af134a856b3c774794ab6, type: 3}
-  imageData: {fileID: 0}
 --- !u!114 &2060873665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7201,9 +7201,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1679042230}
-        m_TargetAssemblyTypeName: FlowManager, Assembly-CSharp
-        m_MethodName: StartGame
+      - m_Target: {fileID: 2046629160}
+        m_TargetAssemblyTypeName: UIHandler, Assembly-CSharp
+        m_MethodName: UINewRound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 282529268}
+        m_TargetAssemblyTypeName: QuestionManager, Assembly-CSharp
+        m_MethodName: OnSaveData
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7233,7 +7245,7 @@ GameObject:
   - component: {fileID: 2081203779}
   - component: {fileID: 2081203780}
   m_Layer: 5
-  m_Name: Slider
+  m_Name: Q1Slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

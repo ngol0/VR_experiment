@@ -7,7 +7,7 @@ using System;
 
 public enum UI_STATE
 {
-    NO_SELECTION,
+    //NO_SELECTION,
     ON_COMPLETE,
     ON_ICON_CLICKED,
     QUESTION_DISPLAY,
@@ -32,10 +32,14 @@ public class UIHandler : MonoBehaviour
     [SerializeField] TMP_Text logText;
     [SerializeField] TMP_Text countdownText;
 
-    [Header("Button Functions binding")]
+    [Header("Buttons")]
     [SerializeField] private List<DisplayButton> iconButtons;
     [SerializeField] DisplayButton startButton;
     [SerializeField] DisplayButton resetButton;
+    [SerializeField] Button continueButton;
+
+    [Header("Question UI")]
+    [SerializeField] Transform questionUI;
 
     void OnEnable()
     {
@@ -44,12 +48,14 @@ public class UIHandler : MonoBehaviour
         manager.OnUIChanged += OnUIChanged;
         manager.UpdateCountdownText += OnCountdownUpdate;
 
-        questionManager.OnContinueAfterQuestion += UIContinueAfterQuestion;
+        questionManager.OnQuestionDone += UIOnQuestionDone;
     }
 
     void Start()
     {
+        continueButton.interactable = false;
         resetButton.gameObject.SetActive(false);
+
         InitIconPrefab();
     }
 
@@ -100,7 +106,7 @@ public class UIHandler : MonoBehaviour
                 //UINotSelect();
                 //break;
             case UI_STATE.ON_ICON_CLICKED:
-                UIOnRest();
+                UIOnQuestionDisplay();
                 break;
             case UI_STATE.DONE_QUESTION:
                 UINewRound();
@@ -109,27 +115,38 @@ public class UIHandler : MonoBehaviour
 
     }
 
-    // -- On Rest: Random icons disappear and Start Btn no interaction
-    void UIOnRest()
+    // -- On Question Display: Random icons disappear and Main UI is hidden
+    void UIOnQuestionDisplay()
     {
         // set all icons to inactive and set start button to a white image
         for (int i = 0; i < iconButtons.Count; i++)
         {
             iconButtons[i].gameObject.SetActive(false);
         }
-        startButton.SetToNullImage();
+        //startButton.SetToNullImage();
+        root.gameObject.SetActive(false); // Hide the root object containing icons
+        questionUI.gameObject.SetActive(true); // Show the question UI
+        continueButton.interactable = false;
     }
 
     // -- Continue after choosing mark for questions
-    // todo: rewrite
-    void UINewRound()
+    public void UINewRound()
     {
+        StartCoroutine(DeactivateAfterSound());
+    }
+
+    public IEnumerator DeactivateAfterSound()
+    {
+        yield return new WaitForSeconds(0.1f);
+        root.gameObject.SetActive(true);
+        questionUI.gameObject.SetActive(false);
         ResetStartButton();
     }
 
-    void UIContinueAfterQuestion()
+    void UIOnQuestionDone()
     {
-        Debug.Log("Activate continue button");
+        // activate continue button in the question ui
+        continueButton.interactable = true;
     }
 
     // -- On Complete: Start Btn is now Reset Btn, all other UI disappear except "Complete" txt

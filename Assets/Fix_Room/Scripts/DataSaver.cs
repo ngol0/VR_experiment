@@ -13,15 +13,15 @@ public class UserData
     float question2;
     float question3;
 
-    public override string ToString()
-    {
-        // Text format — change this as needed
-        return $"Round {round + 1}:\n - Target Icon Index: {targetIndex}\n - Selected Icon Index: {pickedIndex}\n - Response Time: {seconds} seconds";
-    }
+    // public override string ToString()
+    // {
+    //     // Text format — change this as needed
+    //     return $"Round {round + 1}:\n - Target Icon Index: {targetIndex}\n - Selected Icon Index: {pickedIndex}\n - Response Time: {seconds} seconds";
+    // }
 
     public string ToCSV()
     {
-        return $"{userId},{round},{targetIndex},{pickedIndex},{seconds}";
+        return $"{userId},{round},{targetIndex},{pickedIndex},{seconds},{question1},{question2},{question3}";
     }
 
     public UserData(int id, int rnd, string tIndex, string pIndex, float secs, float q1, float q2, float q3)
@@ -81,7 +81,7 @@ public class DataSaver : MonoBehaviour
     {
         // Add header once
         if (!File.Exists(csvPath))
-            File.WriteAllText(csvPath, "UserID,Round,TargetIndex,PickedIndex,Seconds\n");
+            File.WriteAllText(csvPath, "UserID,Round,TargetIndex,PickedIndex,Seconds,Q1,Q2,Q3\n");
 
         File.AppendAllText(csvPath, data.ToCSV() + "\n");
     }
