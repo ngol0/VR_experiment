@@ -13,12 +13,6 @@ public class UserData
     float question2;
     float question3;
 
-    // public override string ToString()
-    // {
-    //     // Text format — change this as needed
-    //     return $"Round {round + 1}:\n - Target Icon Index: {targetIndex}\n - Selected Icon Index: {pickedIndex}\n - Response Time: {seconds} seconds";
-    // }
-
     public string ToCSV()
     {
         return $"{userId},{round},{targetIndex},{pickedIndex},{seconds},{question1},{question2},{question3}";

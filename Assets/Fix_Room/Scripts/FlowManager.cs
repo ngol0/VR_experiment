@@ -14,6 +14,7 @@ public class FlowManager : MonoBehaviour
     private float selectedTime;
     private ImageSO iconTargetData;
     private ImageSO selectedTargetData;
+    private float timeforRound = 15.0f;
 
     //-----Event for UI-----
     public Action<ImageSO, List<ImageSO>> OnStart;
@@ -42,7 +43,7 @@ public class FlowManager : MonoBehaviour
         OnStart?.Invoke(iconTargetData, imageList);
         //StartCoroutine(Countdown(15.0f, MoveOnAfterNoPick));
 
-        StartCoroutine(Countdown(15.0f, DisplayQuestion));
+        StartCoroutine(Countdown(timeforRound, DisplayQuestion));
     }
 
     // when icon is clicked > save data and go to rest state for 10 seconds
@@ -109,9 +110,6 @@ public class FlowManager : MonoBehaviour
                 selectedTargetData.iconName,
                 selectedTime,
                 q1, q2, q3);
-
-            // change UI
-            //OnUIChanged?.Invoke(UI_STATE.DONE_QUESTION);
         }
         else //when user don't pick any icon
         {
@@ -119,11 +117,8 @@ public class FlowManager : MonoBehaviour
             OnSaveData?.Invoke(iconFinder.CurrentIndex + 1,
                 iconTargetData.iconName,
                 "null",
-                -1.0f,
+                timeforRound,
                 q1, q2, q3);
-
-            // change UI
-            //OnUIChanged?.Invoke(UI_STATE.NO_SELECTION);
         }
         OnUIChanged?.Invoke(UI_STATE.DONE_QUESTION);
     }

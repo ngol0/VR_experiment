@@ -7,12 +7,9 @@ using System;
 
 public enum UI_STATE
 {
-    //NO_SELECTION,
     ON_COMPLETE,
     ON_ICON_CLICKED,
-    QUESTION_DISPLAY,
     DONE_QUESTION,
-    ON_CONTINUE
 }
 
 public class UIHandler : MonoBehaviour
@@ -48,7 +45,7 @@ public class UIHandler : MonoBehaviour
         manager.OnUIChanged += OnUIChanged;
         manager.UpdateCountdownText += OnCountdownUpdate;
 
-        questionManager.OnQuestionDone += UIOnQuestionDone;
+        questionManager.OnQuestionDone += UIOnQuestionDone; //activate continue btn
     }
 
     void Start()
@@ -102,9 +99,6 @@ public class UIHandler : MonoBehaviour
             case UI_STATE.ON_COMPLETE:
                 UIComplete();
                 break;
-            //case UI_STATE.NO_SELECTION:
-                //UINotSelect();
-                //break;
             case UI_STATE.ON_ICON_CLICKED:
                 UIOnQuestionDisplay();
                 break;
@@ -140,6 +134,7 @@ public class UIHandler : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         root.gameObject.SetActive(true);
         questionUI.gameObject.SetActive(false);
+        countdownText.text = ""; // Clear countdown text
         ResetStartButton();
     }
 

@@ -32,8 +32,15 @@ public class SliderHandler : MonoBehaviour
 
     public void OnReset()
     {
-        // reset values
+        // Temporarily remove listener
+        slider.onValueChanged.RemoveListener(UpdateHandleValue);
+
+        // Reset value
         slider.value = slider.minValue;
+        currentValue = slider.value;
         valueText.text = "?";
+
+        // Reattach listener
+        slider.onValueChanged.AddListener(UpdateHandleValue);
     }
 }
