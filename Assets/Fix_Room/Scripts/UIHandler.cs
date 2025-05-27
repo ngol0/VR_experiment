@@ -96,14 +96,14 @@ public class UIHandler : MonoBehaviour
     {
         switch (state)
         {
-            case UI_STATE.ON_COMPLETE:
-                UIComplete();
-                break;
             case UI_STATE.ON_ICON_CLICKED:
                 UIOnQuestionDisplay();
                 break;
+            case UI_STATE.ON_COMPLETE:
+                UINewRound(true);
+                break;
             case UI_STATE.DONE_QUESTION:
-                UINewRound();
+                UINewRound(false);
                 break;
         }
 
@@ -117,52 +117,53 @@ public class UIHandler : MonoBehaviour
         {
             iconButtons[i].gameObject.SetActive(false);
         }
-        //startButton.SetToNullImage();
+
         root.gameObject.SetActive(false); // Hide the root object containing icons
         questionUI.gameObject.SetActive(true); // Show the question UI
         continueButton.interactable = false;
     }
 
     // -- Continue after choosing mark for questions
-    public void UINewRound()
+    public void UINewRound(bool isFinish)
     {
-        StartCoroutine(DeactivateAfterSound());
+        StartCoroutine(DeactivateAfterSound(isFinish));
     }
 
-    public IEnumerator DeactivateAfterSound()
+    public IEnumerator DeactivateAfterSound(bool isFinish)
     {
         yield return new WaitForSeconds(0.1f);
+        if (isFinish)
+        {
+            OnContinueClicked("Experiment Complete!");
+
+            startButton.gameObject.SetActive(false);
+            //logText.gameObject.SetActive(false);
+            resetButton.gameObject.SetActive(true);
+
+            // set all icons to inactive
+            for (int i = 0; i < iconButtons.Count; i++)
+            {
+                iconButtons[i].gameObject.SetActive(false);
+            }
+        }
+        else
+        {
+            OnContinueClicked();
+            ResetStartButton();
+        }
+    }
+
+    void OnContinueClicked(string txt = "")
+    {
         root.gameObject.SetActive(true);
         questionUI.gameObject.SetActive(false);
-        countdownText.text = ""; // Clear countdown text
-        ResetStartButton();
+        countdownText.text = txt;
     }
 
     void UIOnQuestionDone()
     {
         // activate continue button in the question ui
         continueButton.interactable = true;
-    }
-
-    // -- On Complete: Start Btn is now Reset Btn, all other UI disappear except "Complete" txt
-    void UIComplete()
-    {
-        countdownText.text = "Experiment Complete!";
-        startButton.gameObject.SetActive(false);
-        logText.gameObject.SetActive(false);
-        resetButton.gameObject.SetActive(true);
-    }
-
-    // -- No Selection: No Rest. All random disappear, Start Btn interactive again
-    void UINotSelect()
-    {
-        for (int i = 0; i < iconButtons.Count; i++)
-        {
-            iconButtons[i].gameObject.SetActive(false);
-        }
-
-        // Reactivate the start button
-        ResetStartButton();
     }
 
     void ResetStartButton()

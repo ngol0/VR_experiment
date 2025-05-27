@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6249941a8f5a40244a202d7d12692175, type: 3}
+  m_Name: NewIconGroup
+  m_EditorClassIdentifier: 
+  groups:
+  - groupName: Round
+    images:
+    - {fileID: 11400000, guid: 25f078f7760b78746b6c275c68f79907, type: 2}
+    - {fileID: 11400000, guid: 151ed9abe40216241b3a4786fd8c96fd, type: 2}
+    - {fileID: 11400000, guid: 6cfff1ca548572648bd11ab40c1de848, type: 2}
+    - {fileID: 11400000, guid: 768f6e85a3803cc4bbec6efcbe65515b, type: 2}
+    - {fileID: 11400000, guid: 666d7113c3616494abc264b79c3b9b72, type: 2}
+    - {fileID: 11400000, guid: eda0849665af19846b4349b28459a390, type: 2}
+    - {fileID: 11400000, guid: 207efa77eee13d84ea444c1fdc4f1906, type: 2}
+    - {fileID: 11400000, guid: ebd29af4183dbc840b51e26074c74515, type: 2}
+    - {fileID: 11400000, guid: 008442a5a65cf63499cc0240be020e16, type: 2}
+  - groupName: Square
+    images:
+    - {fileID: 11400000, guid: b0c739defb950b84f8a5b0c3c6c1c872, type: 2}
+    - {fileID: 11400000, guid: 89a696f34d77c0d46beab203ecd9fa8b, type: 2}
+    - {fileID: 11400000, guid: 4071796d8fa98af41b06de9a183d15c1, type: 2}
+    - {fileID: 11400000, guid: 765b5322dec1b2e4da08b718757a30cf, type: 2}
+    - {fileID: 11400000, guid: 1d61791c9da4b4d4187cdf78920882a7, type: 2}
+    - {fileID: 11400000, guid: 02ce1ced93a664b4db6409ab8958d9ad, type: 2}
+    - {fileID: 11400000, guid: 8e8a24e27de236344ac7032273714d65, type: 2}
+    - {fileID: 11400000, guid: 03d52512931d85547a0f36f5f8048b09, type: 2}
+    - {fileID: 11400000, guid: c37ac9e43b8f1f54a88c0889e17e4f0d, type: 2}

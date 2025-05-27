@@ -13,7 +13,7 @@ public class IconFinder : MonoBehaviour
     int GROUP_SIZE;
     int NUMBER_OF_GROUP;
     public const int MAX_RANDOM = 10;
-    int ICON_SIZE = 27;
+    int ICON_SIZE;
 
     // -- 
     int targetGroupIndex = 0;
@@ -24,58 +24,64 @@ public class IconFinder : MonoBehaviour
 
     List<ImageSO> randomImages = new List<ImageSO>();
 
-    [Header("Random Image Configuration")]
-    [SerializeField][Range(1, MAX_RANDOM)] int numberOfSameGroupImages = 4;
-
     void Start()
     {
         GROUP_SIZE = groupIconData.groups[0].images.Count;
         NUMBER_OF_GROUP = groupIconData.groups.Count;
         ICON_SIZE = GROUP_SIZE * NUMBER_OF_GROUP;
+        Debug.Log("Icon Size: " + ICON_SIZE.ToString() + ", Group Size: " + GROUP_SIZE.ToString() + ", Number of Groups: " + NUMBER_OF_GROUP.ToString());
 
         indexList = Enumerable.Range(0, ICON_SIZE).OrderBy(_ => UnityEngine.Random.value).ToList();
     }
 
     //------------------Function for picking random icons:--------------------
     //------------------------------------------------------------------------
-    // Details: Adjust slider in Unity Editor to set the image from same group
-    // if image from same group is 10, no image is taken from other group
-    public List<ImageSO> ChooseRandomImg()
+    // Details: 
+
+    public List<ImageSO> ChooseRandomImageFromSameGroup()
     {
         randomImages.Clear();
 
-        // --- Get indexes in the target group
-        // Pick random others from the same group
-        List<int> otherInGroupIndexes = ChooseRandomIndexFromSameGroup(numberOfSameGroupImages);
+        List<int> sameGroupIndexes = Enumerable.Range(targetGroupIndex * GROUP_SIZE, GROUP_SIZE).ToList();
+        sameGroupIndexes.Remove(targetImageIndex); // remove the actual target
 
-        // --- Combine all selected indexes
-        List<int> pickIndexes = new List<int>
+        // Choose the 9 random images:
+        Dictionary<int, int> iconCount = new Dictionary<int, int>();
+        List<int> pickedIndexes = new List<int>
         {
-            targetImageIndex // Add actual target first
+            // Add target icon once
+            targetImageIndex
         };
-        pickIndexes.AddRange(otherInGroupIndexes);
+        iconCount[targetImageIndex] = 1;
 
-        if (numberOfSameGroupImages < MAX_RANDOM)
+        System.Random rng = new System.Random();
+        // Fill remaining images
+        while (pickedIndexes.Count < MAX_RANDOM)
         {
-            //Debug.Log("Picking from other group");
-            // --- Get indexes in other groups
-            List<int> otherGroupIndexes = new List<int>();
-            for (int i = 0; i < NUMBER_OF_GROUP; i++)
+            int randomIcon = sameGroupIndexes[rng.Next(sameGroupIndexes.Count)];
+
+            if (!iconCount.ContainsKey(randomIcon))
+                iconCount[randomIcon] = 0;
+
+            // Add only if not over 3 times
+            if (iconCount[randomIcon] < 3)
             {
-                if (i == targetGroupIndex) continue;
-                otherGroupIndexes.AddRange(Enumerable.Range(i * GROUP_SIZE, GROUP_SIZE));
+                pickedIndexes.Add(randomIcon);
+                iconCount[randomIcon]++;
             }
 
-            List<int> otherGroupChoices = otherGroupIndexes.OrderBy(_ => UnityEngine.Random.value).Take(
-                MAX_RANDOM - numberOfSameGroupImages).ToList();
-            pickIndexes.AddRange(otherGroupChoices);
+            // Break safety net (in case of infinite loop due to logic error or very small group)
+            if (pickedIndexes.Count > 100)
+            {
+                Debug.LogWarning("Pick limit exceeded, check logic.");
+                break;
+            }
         }
-
-        // Shuffle the pickable indexes
-        pickIndexes = pickIndexes.OrderBy(_ => UnityEngine.Random.value).ToList();
+        // Shuffle so target isn't always first
+        pickedIndexes = pickedIndexes.OrderBy(_ => UnityEngine.Random.value).ToList();
 
         // Get the sprites
-        foreach (int idx in pickIndexes)
+        foreach (int idx in pickedIndexes)
         {
             int group = idx / GROUP_SIZE;
             ImageSO s = FindSpriteByGroupAndIndex(group, idx);
@@ -86,35 +92,6 @@ public class IconFinder : MonoBehaviour
         }
 
         return randomImages;
-    }
-
-    public List<int> ChooseRandomIndexFromSameGroup(int numberOfImages)
-    {
-        randomImages.Clear();
-
-        List<int> sameGroupIndexes = Enumerable.Range(targetGroupIndex * GROUP_SIZE, GROUP_SIZE).ToList();
-        sameGroupIndexes.Remove(targetImageIndex); // remove the actual target
-        List<int> otherInGroupIndexes = new List<int>();
-
-        // take a set of image from the same group as target (but not include target in here)
-        // if num of images is set < 10
-        if (numberOfImages < MAX_RANDOM)
-        {
-            // take (num of image - 1) image in the same group (and then take target later)
-            otherInGroupIndexes = sameGroupIndexes.OrderBy(
-                _ => UnityEngine.Random.value).Take(numberOfImages - 1).ToList();
-        }
-        else
-        {
-            // take 9 images from the same group if same group image is set to 10 (then take target later)
-            for (int i = 0; i < numberOfImages - 1; i++)
-            {
-                int randomIndex = UnityEngine.Random.Range(0, sameGroupIndexes.Count);
-                otherInGroupIndexes.Add(sameGroupIndexes[randomIndex]);
-            }
-        }
-
-        return otherInGroupIndexes;
     }
 
     public ImageSO ChooseTargetImg()
@@ -151,7 +128,7 @@ public class IconFinder : MonoBehaviour
 
     public bool IsFinish()
     {
-        return currentIndex >= ICON_SIZE - 1;
-        //return currentIndex > 1; //for testing only
+        //return currentIndex >= ICON_SIZE - 1;
+        return currentIndex > 0; //for testing only
     }
 }

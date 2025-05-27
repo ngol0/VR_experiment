@@ -38,7 +38,7 @@ public class FlowManager : MonoBehaviour
         iconTargetData = iconFinder.ChooseTargetImg();
 
         //------Find and set image for pickable buttons
-        List<ImageSO> imageList = iconFinder.ChooseRandomImg();
+        List<ImageSO> imageList = iconFinder.ChooseRandomImageFromSameGroup();
 
         OnStart?.Invoke(iconTargetData, imageList);
         //StartCoroutine(Countdown(15.0f, MoveOnAfterNoPick));
@@ -61,21 +61,8 @@ public class FlowManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
         StopAllCoroutines(); // stop the other countdown
-
-        // Check if at the end of index
-        if (iconFinder.IsFinish())
-        {
-            OnUIChanged?.Invoke(UI_STATE.ON_COMPLETE);
-        }
-        else
-        {
-            // rest 10 secs
-            //OnUIChanged?.Invoke(UI_STATE.ON_ICON_CLICKED);
-            //StartCoroutine(Countdown(10.0f, ContinueAfterRest));
-
-            // display the questions
-            DisplayQuestion();
-        }
+        
+        DisplayQuestion();
     }
 
     void DisplayQuestion()
@@ -95,8 +82,6 @@ public class FlowManager : MonoBehaviour
             yield return new WaitForSeconds(1f); // update every second
             counter -= 1f;
         }
-
-        UpdateCountdownText?.Invoke("");
         DoSomething?.Invoke();
     }
 
@@ -120,7 +105,8 @@ public class FlowManager : MonoBehaviour
                 timeforRound,
                 q1, q2, q3);
         }
-        OnUIChanged?.Invoke(UI_STATE.DONE_QUESTION);
+        // Check if at the end of index
+        OnUIChanged?.Invoke(iconFinder.IsFinish() ? UI_STATE.ON_COMPLETE : UI_STATE.DONE_QUESTION);
     }
 
     bool HavePicked()

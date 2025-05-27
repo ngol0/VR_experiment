@@ -3449,8 +3449,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
-  m_fontSizeBase: 25
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -5911,8 +5911,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74bf5c507798931428cd96ca931bfffc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groupIconData: {fileID: 11400000, guid: 69d9b778549154a46b340431268f5ca5, type: 2}
-  numberOfSameGroupImages: 1
+  groupIconData: {fileID: 11400000, guid: 6c9e66c62208eb744b3fb9a6a4207955, type: 2}
 --- !u!114 &1679042230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8070,18 +8069,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2046629160}
-        m_TargetAssemblyTypeName: UIHandler, Assembly-CSharp
-        m_MethodName: UINewRound
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 282529268}
         m_TargetAssemblyTypeName: QuestionManager, Assembly-CSharp
         m_MethodName: OnSaveData
