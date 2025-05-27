@@ -11,12 +11,15 @@ public enum UI_STATE
     ON_COMPLETE,
     ON_ICON_CLICKED,
     QUESTION_DISPLAY,
-    DONE_QUESTION
+    DONE_QUESTION,
+    ON_CONTINUE
 }
 
 public class UIHandler : MonoBehaviour
 {
+    [Header("Logic")]
     [SerializeField] FlowManager manager;
+    [SerializeField] QuestionManager questionManager;
 
     [Header("Init icons")]
     [SerializeField] private Transform root;
@@ -40,6 +43,8 @@ public class UIHandler : MonoBehaviour
         manager.OnButtonClicked += UpdateLogOnClick;
         manager.OnUIChanged += OnUIChanged;
         manager.UpdateCountdownText += OnCountdownUpdate;
+
+        questionManager.OnContinueAfterQuestion += UIContinueAfterQuestion;
     }
 
     void Start()
@@ -91,14 +96,14 @@ public class UIHandler : MonoBehaviour
             case UI_STATE.ON_COMPLETE:
                 UIComplete();
                 break;
-            case UI_STATE.NO_SELECTION:
-                UINotSelect();
-                break;
+            //case UI_STATE.NO_SELECTION:
+                //UINotSelect();
+                //break;
             case UI_STATE.ON_ICON_CLICKED:
                 UIOnRest();
                 break;
             case UI_STATE.DONE_QUESTION:
-                UIContinue();
+                UINewRound();
                 break;
         }
 
@@ -115,10 +120,16 @@ public class UIHandler : MonoBehaviour
         startButton.SetToNullImage();
     }
 
-    // -- Continue after rest: Reactivate Start Btn
-    void UIContinue()
+    // -- Continue after choosing mark for questions
+    // todo: rewrite
+    void UINewRound()
     {
         ResetStartButton();
+    }
+
+    void UIContinueAfterQuestion()
+    {
+        Debug.Log("Activate continue button");
     }
 
     // -- On Complete: Start Btn is now Reset Btn, all other UI disappear except "Complete" txt
