@@ -42,53 +42,66 @@ public class IconFinder : MonoBehaviour
     {
         randomImages.Clear();
 
-        List<int> sameGroupIndexes = Enumerable.Range(targetGroupIndex * GROUP_SIZE, GROUP_SIZE).ToList();
-        sameGroupIndexes.Remove(targetImageIndex); // remove the actual target
+        // Get all indexes from the same group except the target
+        List<int> sameGroupIndexes = Enumerable.Range(targetGroupIndex * GROUP_SIZE, GROUP_SIZE)
+            .Where(i => i != targetImageIndex)
+            .ToList();
 
-        // Choose the 9 random images:
-        Dictionary<int, int> iconCount = new Dictionary<int, int>();
-        List<int> pickedIndexes = new List<int>
+        // Check if we have enough images to fill the requirements
+        int uniqueImagesAvailable = sameGroupIndexes.Count;
+        int maxPossibleSelections = uniqueImagesAvailable * 3; // Each can appear up to 3 times
+
+        if (maxPossibleSelections < MAX_RANDOM - 1) // -1 because we always include the target once
         {
-            // Add target icon once
-            targetImageIndex
-        };
-        iconCount[targetImageIndex] = 1;
+            Debug.LogError($"Not enough images to fill {MAX_RANDOM} slots. " +
+                          $"Available unique images: {uniqueImagesAvailable}, " +
+                          $"Max possible selections: {maxPossibleSelections + 1} (including target)");
+            return randomImages;
+        }
 
-        System.Random rng = new System.Random();
-        // Fill remaining images
-        while (pickedIndexes.Count < MAX_RANDOM)
+        // Create a pool where each index can appear up to 3 times
+        List<int> selectionPool = new List<int>();
+        foreach (int index in sameGroupIndexes)
         {
-            int randomIcon = sameGroupIndexes[rng.Next(sameGroupIndexes.Count)];
-
-            if (!iconCount.ContainsKey(randomIcon))
-                iconCount[randomIcon] = 0;
-
-            // Add only if not over 3 times
-            if (iconCount[randomIcon] < 3)
+            for (int i = 0; i < 3; i++)
             {
-                pickedIndexes.Add(randomIcon);
-                iconCount[randomIcon]++;
-            }
-
-            // Break safety net (in case of infinite loop due to logic error or very small group)
-            if (pickedIndexes.Count > 100)
-            {
-                Debug.LogWarning("Pick limit exceeded, check logic.");
-                break;
+                selectionPool.Add(index);
             }
         }
-        // Shuffle so target isn't always first
-        pickedIndexes = pickedIndexes.OrderBy(_ => UnityEngine.Random.value).ToList();
 
-        // Get the sprites
+        // Shuffle the pool using a single random instance
+        System.Random rng = new System.Random();
+        selectionPool = selectionPool.OrderBy(_ => rng.Next()).ToList();
+
+        // Take the required number of images (excluding the target which we'll add separately)
+        List<int> pickedIndexes = selectionPool.Take(MAX_RANDOM - 1).ToList();
+
+        // Add the target image exactly once
+        pickedIndexes.Add(targetImageIndex);
+
+        // Final shuffle to ensure target isn't always in the same position
+        pickedIndexes = pickedIndexes.OrderBy(_ => rng.Next()).ToList();
+
+        // Convert indexes to ImageSO objects
         foreach (int idx in pickedIndexes)
         {
             int group = idx / GROUP_SIZE;
-            ImageSO s = FindSpriteByGroupAndIndex(group, idx);
-            if (s != null)
+            ImageSO sprite = FindSpriteByGroupAndIndex(group, idx);
+
+            if (sprite != null)
             {
-                randomImages.Add(s);
+                randomImages.Add(sprite);
             }
+            else
+            {
+                Debug.LogWarning($"Could not find sprite for group {group}, index {idx}");
+            }
+        }
+
+        // Verify we got the expected number of images
+        if (randomImages.Count != MAX_RANDOM)
+        {
+            Debug.LogWarning($"Expected {MAX_RANDOM} images but got {randomImages.Count}");
         }
 
         return randomImages;
@@ -128,7 +141,7 @@ public class IconFinder : MonoBehaviour
 
     public bool IsFinish()
     {
-        //return currentIndex >= ICON_SIZE - 1;
-        return currentIndex > 0; //for testing only
+        return currentIndex >= ICON_SIZE - 1;
+        //return currentIndex > 0; //for testing only
     }
 }
